@@ -1,24 +1,32 @@
 package com.packt.cardatabase.domain;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "car")
 public class Car {
-    private String brand, model, color, registerNumber;
-    private int price;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String brand, model, color, registerNumber;
+    private int price;
+    @ManyToMany(mappedBy = "cars")
+    Set<Owner> owners = new HashSet<Owner>();
+
 
     public Car(){}
 
-    public Car(String brand, String model, String color, String registerNumber, int price) {
+    public Car(String brand, String model, String color, String registerNumber, int price, Set<Owner> owners) {
         super();
         this.brand = brand;
         this.model = model;
         this.color = color;
         this.registerNumber = registerNumber;
         this.price = price;
+        this.owners = owners;
     }
 
     public long getId() {
@@ -27,6 +35,14 @@ public class Car {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Set<Owner> getOwners() {
+        return owners;
+    }
+
+    public void setOwners(Set<Owner> owners) {
+        this.owners = owners;
     }
 
     public String getBrand() {
